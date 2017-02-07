@@ -6,12 +6,14 @@ import seedu.addressbook.data.exception.IllegalValueException;
  * Represents a Person's phone number in the address book.
  * Guarantees: immutable; is valid as declared in {@link #isValidPhone(String)}
  */
-public class Phone extends Contact implements Printable {
+public class Phone {
 
     public static final String EXAMPLE = "123456789";
     public static final String MESSAGE_PHONE_CONSTRAINTS = "Person phone numbers should only contain numbers";
     public static final String PHONE_VALIDATION_REGEX = "\\d+";
 
+    public final String value;
+    private boolean isPrivate;
 
     /**
      * Validates given phone number.
@@ -21,7 +23,7 @@ public class Phone extends Contact implements Printable {
     public Phone(String phone, boolean isPrivate) throws IllegalValueException {
         this.isPrivate = isPrivate;
         String trimmedPhone = phone.trim();
-        if (!isValid(trimmedPhone)) {
+        if (!isValidPhone(trimmedPhone)) {
             throw new IllegalValueException(MESSAGE_PHONE_CONSTRAINTS);
         }
         this.value = trimmedPhone;
@@ -30,15 +32,15 @@ public class Phone extends Contact implements Printable {
     /**
      * Checks if a given string is a valid person phone number.
      */
-    public static boolean isValid(String test) {
+    public static boolean isValidPhone(String test) {
         return test.matches(PHONE_VALIDATION_REGEX);
     }
 
     @Override
-    public String getPrintableString() {
-    	return "Phone: " + this.value;
+    public String toString() {
+        return value;
     }
-    
+
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
@@ -46,4 +48,12 @@ public class Phone extends Contact implements Printable {
                 && this.value.equals(((Phone) other).value)); // state check
     }
 
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    public boolean isPrivate() {
+        return isPrivate;
+    }
 }
